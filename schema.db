@@ -1,0 +1,12 @@
+CREATE TABLE [dbo].[WebUsers] (
+    ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(255) NOT NULL,
+    Email NVARCHAR(255) NOT NULL,
+    Job NVARCHAR(255) NOT NULL,
+    Date DATE NOT NULL
+);
+
+INSERT INTO [dbo].[WebUsers](Name, Email, Job, Date) VALUES
+(N'Testing', N'testing@dicoding.com', N'Akademisi', '2019-07-01');
+
+SELECT * FROM [dbo].[WebUsers];

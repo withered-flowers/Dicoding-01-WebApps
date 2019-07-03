@@ -1,0 +1,35 @@
+html
+  head
+  body
+    h1 Register Here!
+    form(action="#")
+      div Fill in your name and email address, then click 
+        b Submit 
+        | to register.
+      div
+        label(for="userName") Name
+        input(type="text", name="userName") 
+      div
+        label(for="userEmail") Email
+        input(type="text", name="userEmail")
+      div
+        label(for="userJob") Job
+        input(type="text", name="userJob")
+      div
+        button(type="submit") Submit
+        button Load Data
+    div
+      table(border='1')
+        thead
+          tr
+            th Name
+            th Email
+            th Job
+            th Date
+          tbody
+            each val, index in result
+              tr
+                td= val.Email
+                td= val.Name
+                td= val.Job
+                td= val.Date

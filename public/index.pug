@@ -2,7 +2,7 @@ html
   head
   body
     h1 Register Here!
-    form(action="#")
+    form(action="/", method="POST")
       div Fill in your name and email address, then click 
         b Submit 
         | to register.
@@ -29,7 +29,7 @@ html
           tbody
             each val, index in result
               tr
-                td= val.Email
                 td= val.Name
+                td= val.Email
                 td= val.Job
                 td= val.Date

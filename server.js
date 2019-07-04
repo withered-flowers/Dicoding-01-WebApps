@@ -28,11 +28,30 @@ app.use(cookieParser());
 router.get('/', async (req, res) => {
     let result = await fetchDataUsers();
 
-    // res.end(JSON.stringify(result));
+    if (result != null) {
+        res.render('index', 
+            { 'result': result.recordset }
+        );
+    }
+    else {
+        res.end("Error Query Data !");
+    }
+});
 
-    res.render('index', 
-        { 'result': result.recordset }
-    );
+router.post('/', async (req, res) => {
+    if(req.body.userName.length > 0 && req.body.userEmail.length > 0 && req.body.userJob.length > 0) {
+        let result = await insertDataUsers(req.body.userName, req.body.userEmail, req.body.userJob);
+
+        if(result != null) {
+            res.redirect('/');
+        }
+        else {
+            res.end("Error Insert Data !")
+        }
+    }
+    else {
+        res.end("Isian form tidak lengkap !");
+    }
 });
 
 let fetchDataUsers = async () => {
@@ -42,12 +61,39 @@ let fetchDataUsers = async () => {
         pool = await sql.connect(dbConfig);
 
         let result = await pool.request()
-            .query('SELECT * FROM [dbo].[WebUsers]')
+            .query('SELECT * FROM [dbo].[WebUsers]');
 
         return result;
     }
     catch (err) {
         console.log(err);
+        return null;
+    }
+    finally {
+        if(pool != null) {
+            sql.close();
+        }
+    }
+}
+
+let insertDataUsers = async (userName, userEmail, userJob) => {
+    let pool;
+
+    try {
+        pool = await sql.connect(dbConfig);
+
+        let result = await pool.request()
+            .input('input_userName', sql.NVarChar, userName)
+            .input('input_userEmail', sql.NVarChar, userEmail)
+            .input('input_userJob', sql.NVarChar, userJob)
+            .query('INSERT INTO [dbo].[WebUsers] (Name, Email, Job, Date) VALUES ' +
+                '(@input_userName, @input_userEmail, @input_userJob, GETUTCDATE());');
+
+        return result;
+    }
+    catch (err) {
+        console.log(err);
+        return null;
     }
     finally {
         if(pool != null) {
